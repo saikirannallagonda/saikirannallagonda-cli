@@ -3,11 +3,19 @@ const output = document.querySelector('.output');
 const input = document.querySelector('.input');
 const prompt = document.querySelector('.prompt');
 const commandInput = document.querySelector('.command-input');
-const COMMANDS = {
-    help: "These are some available commands:\nls\npwd\nwhoami\n",
-    whoami: "Sai Kiran Nallagonda",
-    
-};
+const COMMANDS = [
+    {
+        name: "whoami",
+        description: "Display name.",
+        result: "Sai Kiran Nallagonda",
+    },
+    {
+        name: "showdp",
+        description: "Display profile picture.",
+        result: "./resources/images/dp.jpg",
+        isImage: true,
+    },
+];
 
 var enteredInputCommand = '';
 var period = 15;
@@ -38,14 +46,17 @@ var displayEnteredCommand = function (commandText) {
 
 var processEnteredCommand = function (commandText) {
     var element = document.createElement('p');
-    if (COMMANDS[commandText]) {
-        element.className = input.className;
-        let outputText = COMMANDS[commandText];
-        typeOutput(element, outputText);
-    } else if(commandText === 'showdp') {
-        element = document.createElement('img');
-        element.src = "./resources/images/dp.jpg";
-        output.appendChild(element);
+    let command = COMMANDS.find(command => command.name === commandText);
+    if (command) {
+        if (command.isImage) {
+            element = document.createElement('img');
+            element.src = command.result;
+            output.appendChild(element);
+        } else {
+            element.className = input.className;
+            let outputText = command.result;
+            typeOutput(element, outputText);
+        }
     } else {
         element.className = 'error';
         typeOutput(element, `error : '${commandText}' command not found! See 'help' for available commands.`);
