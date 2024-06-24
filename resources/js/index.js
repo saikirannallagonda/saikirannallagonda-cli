@@ -6,19 +6,24 @@ const commandInput = document.querySelector('.command-input');
 const COMMANDS = [
     {
         name: "whoami",
-        description: "Display name.",
+        usage: "Display name.",
         result: "Sai Kiran Nallagonda",
     },
     {
         name: "showdp",
-        description: "Display profile picture.",
+        usage: "Display profile picture.",
         result: "./resources/images/dp.jpg",
         isImage: true,
+    },
+    {
+        name: "clear",
+        usage: "Clear the CLI.",
     },
 ];
 
 var enteredInputCommand = '';
-var period = 15;
+var typePeriod = 15;
+var linePeriod = 150;
 var beep = new Audio('./resources/audio/beep-sound.mp3');
 
 var displayOutput = function (commandText) {
@@ -57,6 +62,9 @@ var processEnteredCommand = function (commandText) {
             let outputText = command.result;
             typeOutput(element, outputText);
         }
+    } else if (commandText === 'help') {
+        element.className = input.className;
+        displayCommands(element);
     } else {
         element.className = 'error';
         typeOutput(element, `error : '${commandText}' command not found! See 'help' for available commands.`);
@@ -73,11 +81,27 @@ var typeOutput = function (element, outputText) {
             beep.play();
             output.appendChild(element);
         }
-    }, period);
+    }, typePeriod);
+}
+
+var displayCommands = function (element) {
+    element.innerHTML = "&nbsp;&nbsp;&nbsp;command : usage<br/>"
+    let index = 0;
+    let interval = setInterval(() => {
+        if (index === COMMANDS.length) {
+            clearInterval(interval);
+        } else {
+            let command = COMMANDS[index];
+            element.innerHTML += `<br/>&nbsp;&nbsp;&nbsp;${command.name} : ${command.usage}`;
+            beep.play();
+            index++;
+        }
+    }, linePeriod);
+    output.appendChild(element);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    header.innerHTML = 'Hi, welcome to my CLI!<br><br>';
+    header.innerHTML = 'Hi, welcome to my CLI!<br><br>See \'help\' for available commands.';
     commandInput.focus();
 });
 
