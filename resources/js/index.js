@@ -42,6 +42,10 @@ var processEnteredCommand = function (commandText) {
         element.className = input.className;
         let outputText = COMMANDS[commandText];
         typeOutput(element, outputText);
+    } else if(commandText === 'showdp') {
+        element = document.createElement('img');
+        element.src = "./resources/images/dp.jpg";
+        output.appendChild(element);
     } else {
         element.className = 'error';
         typeOutput(element, `error : '${commandText}' command not found! See 'help' for available commands.`);

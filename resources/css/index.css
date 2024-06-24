@@ -25,6 +25,27 @@ body {
     margin: 0;
 }
 
+.output img {
+    max-width: 16rem;
+    height: auto;
+    object-fit: cover;
+    opacity: 0;
+    animation: loading-effect 2s ease-in-out forwards;
+}
+
+@keyframes loading-effect {
+    0% {
+        opacity: 0;
+        background-size: 0% 0%;
+        background-position: 0% 0%;
+    }
+    100% {
+        opacity: 1;
+        background-size: 100% 100%;
+        background-position: 100% 100%;
+    }
+}
+
 .input {
     display: flex;
     margin: 0;
