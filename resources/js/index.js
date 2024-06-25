@@ -1,9 +1,11 @@
+"use strict";
+
 const header = document.querySelector('.header');
 const output = document.querySelector('.output');
 const input = document.querySelector('.input');
 const prompt = document.querySelector('.prompt');
 const commandInput = document.querySelector('.command-input');
-const COMMANDS = [
+const commands = [
     {
         name: "whoami",
         usage: "Display name.",
@@ -25,8 +27,17 @@ var enteredInputCommand = '';
 var typePeriod = 15;
 var linePeriod = 150;
 var beep = new Audio('./resources/audio/beep-sound.mp3');
+var commandsUsed = ['help'];
+var commandIndex = 0;
+
+const focusInput = function () {
+    input.scrollIntoView({ behavior: "smooth", block: "end" });
+};
+const outputObserver = new MutationObserver(focusInput);
+outputObserver.observe(output, { childList: true, subtree: true, attributes: true, characterData: true, });
 
 var displayOutput = function (commandText) {
+    commandText = commandText.trim();
     if (commandText === 'clear') {
         clearOutput();
     } else {
@@ -51,7 +62,7 @@ var displayEnteredCommand = function (commandText) {
 
 var processEnteredCommand = function (commandText) {
     var element = document.createElement('p');
-    let command = COMMANDS.find(command => command.name === commandText);
+    let command = commands.find(command => command.name === commandText);
     if (command) {
         if (command.isImage) {
             element = document.createElement('img');
@@ -88,16 +99,23 @@ var displayCommands = function (element) {
     element.innerHTML = "&nbsp;&nbsp;&nbsp;command : usage<br/>"
     let index = 0;
     let interval = setInterval(() => {
-        if (index === COMMANDS.length) {
+        if (index === commands.length) {
             clearInterval(interval);
         } else {
-            let command = COMMANDS[index];
+            let command = commands[index];
             element.innerHTML += `<br/>&nbsp;&nbsp;&nbsp;${command.name} : ${command.usage}`;
             beep.play();
             index++;
         }
     }, linePeriod);
     output.appendChild(element);
+}
+
+var updateCommandInput = function (value) {
+    commandInput.value = value;
+    let inputEvent = new Event('input', { bubbles: true });
+    commandInput.dispatchEvent(inputEvent);
+    commandInput.focus();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -114,7 +132,25 @@ commandInput.addEventListener('input', function (event) {
 });
 
 commandInput.addEventListener("keydown", function (event) {
-    if (event.key === 'Enter' && enteredInputCommand !== '') {
+    if ((event.key === 'Enter' || event.keyCode === 13) && enteredInputCommand !== '') {
+        commandsUsed.pop();
+        commandsUsed.push(enteredInputCommand);
+        commandsUsed.push('');
         displayOutput(enteredInputCommand);
+        commandIndex = commandsUsed.length - 1;
+    } else if ((event.key === 'ArrowDown' || event.keyCode === 40)) {
+        if(commandIndex >= commandsUsed.length - 1) {
+            commandIndex = commandsUsed.length - 1;
+            updateCommandInput(commandsUsed[commandIndex]);
+        } else if(commandIndex < commandsUsed.length) {
+            updateCommandInput(commandsUsed[++commandIndex]);
+        }
+    } else if ((event.key === 'ArrowUp' || event.keyCode === 38)) {
+        if(commandIndex <= 0) {
+            commandIndex = 0;
+            updateCommandInput(commandsUsed[commandIndex]);
+        } else if(commandIndex > 0) {
+            updateCommandInput(commandsUsed[--commandIndex]);
+        }
     }
 });
