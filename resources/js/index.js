@@ -18,6 +18,15 @@ const commands = [
         isImage: true,
     },
     {
+        name: "links",
+        usage: "View links",
+        links: new Map([
+            ["X (Twitter)", "https://x.com/SaiKNallagonda"],
+            ["YouTube", "https://www.youtube.com/@sai_kiran_n"],
+        ]),
+        areLinks: true,
+    },
+    {
         name: "clear",
         usage: "Clear the CLI.",
     },
@@ -46,7 +55,7 @@ var displayOutput = function (commandText) {
     }
     enteredInputCommand = '';
     commandInput.value = '';
-}
+};
 
 var clearOutput = function () {
     beep.play();
@@ -56,7 +65,7 @@ var clearOutput = function () {
 var displayEnteredCommand = function (commandText) {
     var element = document.createElement('p');
     element.className = input.className;
-    element.textContent = `$ ${commandText}`;
+    element.innerHTML = `$&nbsp${commandText}`;
     output.appendChild(element);
 };
 
@@ -68,6 +77,8 @@ var processEnteredCommand = function (commandText) {
             element = document.createElement('img');
             element.src = command.result;
             output.appendChild(element);
+        } else if (command.areLinks) {
+            displayLinks(command.links);
         } else {
             element.className = input.className;
             let outputText = command.result;
@@ -93,7 +104,26 @@ var typeOutput = function (element, outputText) {
             output.appendChild(element);
         }
     }, typePeriod);
-}
+};
+
+var displayLinks = function (links) {
+    let keys = links.keys();
+    let list = document.createElement('ul');
+    let interval = setInterval(() => {
+        let next = keys.next();
+        if (next.done) {
+            clearInterval(interval);
+        } else {
+            let key = next.value;
+            let value = links.get(key);
+            let link = document.createElement('li');
+            link.innerHTML = `<p>${key}</p>&nbsp;&nbsp;&nbsp;<a href=${value} target='_blank'>${value}</a>`;
+            beep.play();
+            list.appendChild(link);
+        }
+    }, linePeriod);
+    output.appendChild(list);
+};
 
 var displayCommands = function (element) {
     element.innerHTML = "&nbsp;&nbsp;&nbsp;command : usage<br/>"
@@ -109,14 +139,14 @@ var displayCommands = function (element) {
         }
     }, linePeriod);
     output.appendChild(element);
-}
+};
 
 var updateCommandInput = function (value) {
     commandInput.value = value;
     let inputEvent = new Event('input', { bubbles: true });
     commandInput.dispatchEvent(inputEvent);
     commandInput.focus();
-}
+};
 
 document.addEventListener("DOMContentLoaded", function () {
     header.innerHTML = 'Hi, welcome to my CLI!<br><br>See \'help\' for available commands.';
@@ -139,17 +169,17 @@ commandInput.addEventListener("keydown", function (event) {
         displayOutput(enteredInputCommand);
         commandIndex = commandsUsed.length - 1;
     } else if ((event.key === 'ArrowDown' || event.keyCode === 40)) {
-        if(commandIndex >= commandsUsed.length - 1) {
+        if (commandIndex >= commandsUsed.length - 1) {
             commandIndex = commandsUsed.length - 1;
             updateCommandInput(commandsUsed[commandIndex]);
-        } else if(commandIndex < commandsUsed.length) {
+        } else if (commandIndex < commandsUsed.length) {
             updateCommandInput(commandsUsed[++commandIndex]);
         }
     } else if ((event.key === 'ArrowUp' || event.keyCode === 38)) {
-        if(commandIndex <= 0) {
+        if (commandIndex <= 0) {
             commandIndex = 0;
             updateCommandInput(commandsUsed[commandIndex]);
-        } else if(commandIndex > 0) {
+        } else if (commandIndex > 0) {
             updateCommandInput(commandsUsed[--commandIndex]);
         }
     }

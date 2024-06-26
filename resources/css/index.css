@@ -25,6 +25,10 @@ body {
     margin: 0;
 }
 
+.output {
+    overflow-wrap: anywhere;
+}
+
 .output img {
     max-width: 16rem;
     height: auto;
@@ -33,12 +37,30 @@ body {
     animation: loading-effect 2s ease-in-out forwards;
 }
 
+.output ul {
+    list-style: none;
+}
+
+.output ul li p {
+    margin: inherit;
+}
+
+.output ul li a {
+    color: inherit;
+    text-decoration-thickness: from-font;
+}
+
+.output ul li a:hover {
+    text-decoration: none;
+}
+
 @keyframes loading-effect {
     0% {
         opacity: 0;
         background-size: 0% 0%;
         background-position: 0% 0%;
     }
+
     100% {
         opacity: 1;
         background-size: 100% 100%;
