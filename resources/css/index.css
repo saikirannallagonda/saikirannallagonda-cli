@@ -1,6 +1,6 @@
 body {
     font-family: monospace;
-    color: #fff;
+    color: #ccc;
     background-color: #000;
     margin: 0;
     padding: 1rem;
@@ -20,7 +20,7 @@ body {
 }
 
 .error {
-    color: red;
+    color: #c00;
     display: flex;
     margin: 0;
 }
@@ -74,16 +74,16 @@ body {
 }
 
 .prompt {
-    color: #0f0;
+    color: #0c0;
 }
 
 .command-input {
     flex: 1;
     background-color: transparent;
     border: none;
-    color: #0f0;
+    color: #0c0;
     font: inherit;
     outline: none;
-    caret-color: #0f0;
+    caret-color: #0c0;
     caret-shape: underscore;
 }

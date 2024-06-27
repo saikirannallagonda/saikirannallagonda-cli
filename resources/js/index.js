@@ -76,6 +76,7 @@ var processEnteredCommand = function (commandText) {
         if (command.isImage) {
             element = document.createElement('img');
             element.src = command.result;
+            beep.play();
             output.appendChild(element);
         } else if (command.areLinks) {
             displayLinks(command.links);
