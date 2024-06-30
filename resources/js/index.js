@@ -18,6 +18,11 @@ const commands = [
         isImage: true,
     },
     {
+        name: "edu",
+        usage: "Display Education.",
+        result: "Graduated in EEE\'18 from GRIET, Hyderabad."
+    },
+    {
         name: "links",
         usage: "View links",
         links: new Map([
