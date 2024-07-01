@@ -48,7 +48,15 @@ const focusInput = function () {
     input.scrollIntoView({ behavior: "smooth", block: "end" });
 };
 const outputObserver = new MutationObserver(focusInput);
-outputObserver.observe(output, { childList: true, subtree: true, attributes: true, characterData: true, });
+const observerOptions = {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: true,
+    characterDataOldValue: true,
+    attributeOldValue: true,
+};
+outputObserver.observe(output, observerOptions);
 
 var displayOutput = function (commandText) {
     commandText = commandText.trim();
