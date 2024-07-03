@@ -196,5 +196,14 @@ commandInput.addEventListener("keydown", function (event) {
         } else if (commandIndex > 0) {
             updateCommandInput(commandsUsed[--commandIndex]);
         }
+    } else if (event.key === 'Tab' || event.keyCode === 9) {
+        event.preventDefault();
+        for (let index = 0; index < commands.length; index++) {
+            const command = commands[index];
+            if (command.name.startsWith(enteredInputCommand)) {
+                updateCommandInput(command.name);
+                break;
+            }
+        }
     }
 });
