@@ -32,6 +32,10 @@ const commands = [
         areLinks: true,
     },
     {
+        name: "help",
+        usage: "Display available commands.",
+    },
+    {
         name: "clear",
         usage: "Clear the CLI.",
     },
@@ -62,6 +66,9 @@ var displayOutput = function (commandText) {
     commandText = commandText.trim();
     if (commandText === 'clear') {
         clearOutput();
+    } else if (commandText === 'help') {
+        displayEnteredCommand(commandText);
+        displayCommands();
     } else {
         displayEnteredCommand(commandText);
         processEnteredCommand(commandText);
@@ -98,9 +105,6 @@ var processEnteredCommand = function (commandText) {
             let outputText = command.result;
             typeOutput(element, outputText);
         }
-    } else if (commandText === 'help') {
-        element.className = input.className;
-        displayCommands(element);
     } else {
         element.className = 'error';
         typeOutput(element, `error : '${commandText}' command not found! See 'help' for available commands.`);
@@ -139,15 +143,16 @@ var displayLinks = function (links) {
     output.appendChild(list);
 };
 
-var displayCommands = function (element) {
-    element.innerHTML = "&nbsp;&nbsp;&nbsp;command : usage<br/>"
+var displayCommands = function () {
+    var element = document.createElement('div');
+    element.innerHTML = "&nbsp;&nbsp;&nbsp;<div class='command-div'>command</div> : usage<br/>"
     let index = 0;
     let interval = setInterval(() => {
         if (index === commands.length) {
             clearInterval(interval);
         } else {
             let command = commands[index];
-            element.innerHTML += `<br/>&nbsp;&nbsp;&nbsp;${command.name} : ${command.usage}`;
+            element.innerHTML += `<br/>&nbsp;&nbsp;&nbsp;<div class='command-div'>${command.name}</div> : ${command.usage}`;
             beep.play();
             index++;
         }

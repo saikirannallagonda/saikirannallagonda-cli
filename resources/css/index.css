@@ -68,6 +68,11 @@ body {
     }
 }
 
+.command-div {
+    width: 5rem;
+    display: inline-block;
+}
+
 .input {
     display: flex;
     margin: 0;
