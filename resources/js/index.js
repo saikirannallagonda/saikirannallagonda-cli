@@ -167,6 +167,8 @@ var updateCommandInput = function (value) {
     commandInput.focus();
 };
 
+document.body.classList.remove('no-js');
+
 document.addEventListener("DOMContentLoaded", function () {
     header.innerHTML = 'Hi, welcome to my CLI!<br><br>See \'help\' for available commands.';
     commandInput.focus();

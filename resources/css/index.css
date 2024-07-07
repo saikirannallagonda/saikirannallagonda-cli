@@ -7,7 +7,13 @@ body {
     font-size: large;
 }
 
+.no-js > *:not(noscript) {
+    display: none !important;
+}
 
+noscript {
+    color: #c00;
+}
 
 .terminal {
     width: 100%;
