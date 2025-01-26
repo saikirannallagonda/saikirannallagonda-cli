@@ -26,8 +26,8 @@ const commands = [
         name: "links",
         usage: "View links",
         links: new Map([
-            ["X (Twitter)", "https://x.com/SaiKNallagonda"],
-            ["YouTube", "https://www.youtube.com/@sai_kiran_n"],
+            ["LinkedIn", "https://www.linkedin.com/in/saikirannallagonda"],
+            ["YouTube", "https://www.youtube.com/@saiknallagonda"],
         ]),
         areLinks: true,
     },
